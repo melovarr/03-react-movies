@@ -49,6 +49,6 @@
   transition: background 0.3s ease;
 }
 
-.card:hover {
+.card:hover .title {
   background: rgba(0, 0, 0, 0.8);
 }

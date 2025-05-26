@@ -4,14 +4,12 @@ import type { Movie } from "../../types/movies";
 import MovieGrid from "../MovieGrid/MovieGrid";
 import { fetchMovies } from "../../services/movieService";
 import MovieModal from "../MovieModal/MovieModal";
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+import toast from "react-hot-toast";
+import ToasterMessage from "../Toaster/Toaster";
+import Loader from "../Loader/Loader";
 import "./App.module.css";
 
-function App() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
@@ -20,40 +18,35 @@ function App() {
   const [isError, setIsError] = useState(false);
 
   const handleSearch = async (topic: string) => {
+    setIsLoading(true);
+    setIsError(false);
+    setMovies([]);
     try {
-      setIsLoading(true);
-      setIsError(false);
-      setMovies([]);
-
       const data = await fetchMovies(topic);
       if (data.length === 0) {
-        alert("No movies found for your request.");
+        toast.error("No movies found for your request.");
       } else {
         setMovies(data);
       }
-
-      console.log(data);
     } catch {
       setIsError(true);
     } finally {
       setIsLoading(false);
     }
   };
-  function selectMovie(movie: Movie): void {
+  function selectMovie(movie: Movie | null): void {
     setSelectedMovie(movie);
   }
   return (
     <>
       <SearchBar onSubmit={handleSearch} />
-      {isLoading && <p>Loading data, please wait...</p>}
+      {isLoading && <Loader />}
       {isError && <p>Whoops, something went wrong! Please try again!</p>}
-      {/* {movies.length > 0 && <MovieGrid movies={movies} />} */}
       <MovieGrid onSelect={selectMovie} movies={movies} />
       {selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={setSelectedMovie} />
       )}
+      <ToasterMessage />
     </>
   );
 }
-
-export default App;

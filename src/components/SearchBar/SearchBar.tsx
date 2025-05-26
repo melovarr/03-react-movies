@@ -1,4 +1,6 @@
 import css from "./SearchBar.module.css";
+import toast from "react-hot-toast";
+import ToasterMessage from "../Toaster/Toaster";
 
 interface SearchFormProps {
   onSubmit: (topic: string) => void;
@@ -8,7 +10,7 @@ export default function SearchBar({ onSubmit }: SearchFormProps) {
   const handleSubmit = (formData: FormData) => {
     const topic = formData.get("query") as string;
     if (topic === "") {
-      alert("Please enter your search query.");
+      toast.error("Please enter your search query.");
       return;
     }
     onSubmit(topic);
@@ -19,7 +21,7 @@ export default function SearchBar({ onSubmit }: SearchFormProps) {
         <div className={css.container}>
           <a
             className={css.link}
-            href="https://www.themoviebd.org/"
+            href="https://www.themoviedb.org"
             target="_blank"
             rel="noopener noreferer"
           >
@@ -39,6 +41,7 @@ export default function SearchBar({ onSubmit }: SearchFormProps) {
             </button>
           </form>
         </div>
+        <ToasterMessage />
       </header>
     </div>
   );
