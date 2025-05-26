@@ -1,5 +1,5 @@
 import axios from "axios";
-import { type Movie } from "../types/movies";
+import { type Movie } from "../types/movie";
 
 const url = "https://api.themoviedb.org/3/search/movie";
 
