@@ -2,11 +2,11 @@ import css from "./SearchBar.module.css";
 import toast from "react-hot-toast";
 import ToasterMessage from "../Toaster/Toaster";
 
-interface SearchFormProps {
+interface SearchBarProps {
   onSubmit: (topic: string) => void;
 }
 
-export default function SearchBar({ onSubmit }: SearchFormProps) {
+export default function SearchBar({ onSubmit }: SearchBarProps) {
   const handleSubmit = (formData: FormData) => {
     const topic = formData.get("query") as string;
     if (topic === "") {
@@ -23,7 +23,7 @@ export default function SearchBar({ onSubmit }: SearchFormProps) {
             className={css.link}
             href="https://www.themoviedb.org"
             target="_blank"
-            rel="noopener noreferer"
+            rel="noopener noreferrer"
           >
             Powered by TMDB
           </a>

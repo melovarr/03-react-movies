@@ -13,13 +13,13 @@ export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [isError, setIsError] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  const handleSearch = async (topic: string) => {
-    setIsLoading(true);
-    setIsError(false);
+  const handleSearch = async (topic: string): Promise<void> => {
+    setLoading(true);
+    setHasError(false);
     setMovies([]);
     try {
       const data = await fetchMovies(topic);
@@ -29,22 +29,26 @@ export default function App() {
         setMovies(data);
       }
     } catch {
-      setIsError(true);
+      setHasError(true);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
-  function selectMovie(movie: Movie | null): void {
+  function selectMovie(movie: Movie): void {
     setSelectedMovie(movie);
   }
   return (
     <>
       <SearchBar onSubmit={handleSearch} />
-      {isLoading && <Loader />}
-      {isError && <p>Whoops, something went wrong! Please try again!</p>}
+      {loading && <Loader />}
+      {hasError &&
+        toast.error("Whoops, something went wrong! Please try again!")}
       <MovieGrid onSelect={selectMovie} movies={movies} />
       {selectedMovie && (
-        <MovieModal movie={selectedMovie} onClose={setSelectedMovie} />
+        <MovieModal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
       )}
       <ToasterMessage />
     </>
