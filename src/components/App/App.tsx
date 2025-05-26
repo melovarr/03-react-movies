@@ -7,6 +7,7 @@ import MovieModal from "../MovieModal/MovieModal";
 import toast from "react-hot-toast";
 import ToasterMessage from "../Toaster/Toaster";
 import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import "./App.module.css";
 
 export default function App() {
@@ -41,8 +42,7 @@ export default function App() {
     <>
       <SearchBar onSubmit={handleSearch} />
       {loading && <Loader />}
-      {hasError &&
-        toast.error("Whoops, something went wrong! Please try again!")}
+      {hasError && <ErrorMessage />}
       <MovieGrid onSelect={selectMovie} movies={movies} />
       {selectedMovie && (
         <MovieModal
